@@ -31,4 +31,4 @@ let longitud = 10;
 
 let suma = altura + longitud;
 
-console.log(suma)
+console.log(suma);
