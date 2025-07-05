@@ -14,4 +14,17 @@ const foodSchedule = [
   { name: "Burger", isVegan: false },
   { name: "Rice", isVegan: true },
   { name: "Pasta", isVegan: true },
+  { name: "Pizza", isVegan: false },
+  { name: "Sushi", isVegan: false },
 ];
+
+let fruitIndex = 0;
+
+for (let i = 0; i < foodSchedule.length; i++) {
+  if (!foodSchedule[i].isVegan) {
+    foodSchedule[i].name = fruits[fruitIndex];
+    fruitIndex++;
+  }
+}
+
+console.log(foodSchedule);
