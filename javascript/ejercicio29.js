@@ -19,7 +19,7 @@ const starWarsMovies = [
 
 let groupedByDecada = {};
 
-for (movie of starWarsMovies) {
+for (const movie of starWarsMovies) {
   const decade = Math.floor(movie.releaseYear / 10) * 10;
 
   if (!groupedByDecada[decade]) {

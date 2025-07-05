@@ -16,7 +16,7 @@ const albums = [
 
 let totalDuration = 0;
 
-for (album of albums) {
+for (const album of albums) {
   if (album.genre === "Rock") {
     totalDuration += album.duration;
   }
