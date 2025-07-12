@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Lista de Albums</title>
+</head>
+<body>
+
+<script>
+  const albums = [
+    "De Mysteriis Dom Sathanas",
+    "Reign of Blood",
+    "Ride the Lightning",
+    "Painkiller",
+    "Iron Fist",
+  ];
+
+  const title = document.createElement("h1");
+  title.textContent = "Albums recomendados";
+  title.style.fontFamily = "Arial, sans-serif";
+  title.style.color = "#333";
+  title.style.marginBottom = "10px";
+  document.body.appendChild(title);
+
+  const ul = document.createElement("ul");
+  ul.style.fontFamily = "Arial, sans-serif";
+  ul.style.listStyleType = "disc";
+  ul.style.paddingLeft = "20px";
+  ul.style.color = "#555";
+
+  for (const album of albums) {
+    const li = document.createElement("li");
+    li.textContent = album;
+    li.style.marginBottom = "6px";
+    ul.appendChild(li);
+  }
+
+  document.body.appendChild(ul);
+  document.body.style.margin = "20px";
+</script>
+
+</body>
+</html>
