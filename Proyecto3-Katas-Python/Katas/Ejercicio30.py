@@ -14,7 +14,7 @@
     1.Convertir ambas palabras en listas de caracteres.
 
     2.Ordenar las listas.
-
+    
     3.Comparar si las listas ordenadas son iguales.'''
 
 # Paso 1: Crear la función para comprobar anagramas. Con sorted convertimos la palabra en una lista de letras ordenadas alfabeticamente.
