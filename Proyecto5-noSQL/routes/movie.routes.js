@@ -62,4 +62,49 @@ router.get('/year/:year', async (req, res, next) => {
   }
 });
 
+//POST Crear una nueva película
+router.post('/create', async (req, res, next) => {
+  try {
+    const newMovie = new Movie(req.body); // Recibe los datos desde el body
+    const createdMovie = await newMovie.save(); // Guarda en la DB
+    return res.status(201).json(createdMovie);
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+// PUT Editar película por ID
+router.put('/edit/:id', async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const updatedMovie = await Movie.findByIdAndUpdate(id, req.body, { new: true });
+    // "new: true" hace que devuelva la película actualizada en vez de la antigua
+    if (updatedMovie) {
+      return res.status(200).json(updatedMovie);
+    } else {
+      return res.status(404).json('No movie found to update');
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+//DELETE Eliminar película por ID
+router.delete('/delete/:id', async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const deletedMovie = await Movie.findByIdAndDelete(id);
+    if (deletedMovie) {
+      return res.status(200).json('Movie deleted successfully');
+    } else {
+      return res.status(404).json('No movie found to delete');
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+
 module.exports = router;

@@ -26,6 +26,7 @@ server.use((error, req, res, next) => {
   return res.status(error.status || 500).json(error.message || 'Unexpected error');
 });
 
+// Inicia el servidor
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
