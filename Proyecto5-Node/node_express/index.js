@@ -21,7 +21,7 @@ server.use('/movies', (req, res) => {
 });*/
 ////////////////////////////////////////////////////////////
 
-// Importa el módulo Express
+/*Importa el módulo Express
 const express = require('express');
 
 const { connect } = require('./utils/db');
@@ -38,7 +38,7 @@ const PORT = 3000;
 const server = express();
 
 // Crea un router para definir rutas separadamente
-const router = express.Router();
+const router = express.Router();*/
 
 // Ruta raíz: responde con un saludo
 router.get('/', (req, res) => {
@@ -74,6 +74,108 @@ router.get('/characters', (req, res) => {
 });
 
 
+/*Obtener un personaje por su ID
+router.get('/characters', (req, res) => {
+    return Character.find()
+    .then(characters => {
+        // Si encontramos los personajes, los devolveremos al usuario
+        return res.status(200).json(characters);
+    })
+    .catch(err => {
+        // Si hay un error, enviaremos por ahora una respuesta de error.
+        return res.status(500).json(err);
+    });
+});*/
+
+// (ES IGUAL QUE EL ANTERIOR PERO MÁS CLARO Y LEGIBLE)NUEVO Endpoint con async/await para obtener todos los personajes
+router.get('/characters', async (req, res) => {
+  try {
+    const characters = await Character.find(); // Espera a que termine la consulta
+    return res.status(200).json(characters);   // Devuelve los personajes encontrados
+  } catch (err) {
+    return res.status(500).json(err);          // Si falla, devuelve error
+  }
+});
+
+// Endpoint para obtener un personaje por id
+router.get('/characters/:id', async (req, res) => {
+  const id = req.params.id; // capturamos el id (valor) de lo que ponga en la URL
+
+  try {
+    const character = await Character.findById(id); // buscamos en Mongo (en mi colección)
+    if (character) {
+      return res.status(200).json(character); // si lo encuentra, lo devuelve
+    } else {
+      return res.status(404).json('No character found by this id'); // si no existe, pone 404
+    }
+  } catch (err) {
+    return res.status(500).json(err); // si hay error, 500
+  }
+});
+
+
+//BUSCAMOS personaje por su alias
+router.get('/characters/alias/:alias', async (req, res) => {
+	const {alias} = req.params;
+
+	try {
+		const characterByAlias = await Character.find({ alias: alias });
+		return res.status(200).json(characterByAlias);
+	} catch (err) {
+		return res.status(500).json(err);
+	}
+});
+
+
+//BUSCAMOS personajes por su edad
+ router.get('/characters/age/:age', async (req, res) => {
+	const {age} = req.params;
+
+	try {
+		const characterByAge = await Character.find({ age: { $gt:age } }); //greater than (encontramos valores más altos que el usado)
+		return res.status(200).json(characterByAge);
+	} catch (err) {
+		return res.status(500).json(err);
+	}
+});
+
+
+/*Al igual que hemos usado $gt tenemos a nuestra disposiciones otros condicionales
+
+Si usamos $lt (less than) encontraremos valores menores al que usemos.
+Si usamos $lte (less than equal) encontraremos valores menores o igual al usado.
+Si usamos $gt (greater than) encontraremos los valores mayores al usado.
+Si usamos $gte (greater than equal) encontraremos los valores mayores e iguales al usado. */
+
+
+//Realizamos los requires
+const express = require('express');
+const {connect} = require('./utils/db')
+const Character = require('./models/Character');
+const characterRoutes = require('./routes/character.routes')
+
+connect(); // Llamamos a la función connect que conecta con MongoDB
+const PORT = 3000;
+const server = express();
+const router = express.Router();
+
+server.use('/characters', characterRoutes);
+
+//Manejador de rutas no especificadas
+server.use((req, res, next) => {
+	const error = new Error('Route not found'); 
+	error.status = 404;
+	next(error); 
+  });
+
+//Manejador de errores
+server.use((error, req, res, next) => {
+	return res.status(error.status || 500).json(error.message || 'Unexpected error');
+});
+
+server.listen(PORT, () => {
+  console.log(`Server running in <http://localhost>:${PORT}`);
+});
 
 // Monta el router en el servidor
 server.use('/', router);
@@ -82,3 +184,7 @@ server.use('/', router);
 server.listen(PORT, () => {
   console.log(`Server running in http://localhost:${PORT}`);
 });
+
+
+server.use(express.json());
+server.use(express.urlencoded({ extended: false }));
