@@ -90,20 +90,21 @@ router.put('/edit/:id', async (req, res, next) => {
   }
 });
 
-//DELETE Eliminar película por ID
+// DELETE Eliminar película por ID
 router.delete('/delete/:id', async (req, res, next) => {
   const { id } = req.params;
   try {
     const deletedMovie = await Movie.findByIdAndDelete(id);
     if (deletedMovie) {
-      return res.status(200).json('Movie deleted successfully');
+      return res.status(200).json({ message: 'Movie deleted successfully' });
     } else {
-      return res.status(404).json('No movie found to delete');
+      return res.status(404).json({ message: 'No movie found to delete' });
     }
   } catch (error) {
     next(error);
   }
 });
+
 
 
 
