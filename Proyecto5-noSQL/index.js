@@ -2,6 +2,7 @@
 const express = require('express');
 const { connect } = require('./utils/db');
 const movieRoutes = require('./routes/movie.routes');
+const cinemaRoutes = require('./routes/cinema.routes'); // Nueva línea para cines
 
 connect(); // Conecta con MongoDB
 
@@ -13,6 +14,9 @@ server.use(express.json());
 
 // Montamos las rutas de películas en /movies
 server.use('/movies', movieRoutes);
+
+// Montamos las rutas de cines en /cinemas
+server.use('/cinemas', cinemaRoutes);
 
 // Manejo de rutas no encontradas
 server.use((req, res, next) => {
